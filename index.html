@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unsolicited Opinions from Houseplants</title>
+  <script async defer src="https://storage.googleapis.com/lucky-orange-staging-public/core/lo.js?site-id=63101cf1"></script>
+  <!-- Slick CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+
+  <style>
+    :root {
+      --green: #3d8b37;
+      --light: #f0f7ee;
+      --dark: #1a1a2e;
+      --accent: #e8c547;
+      --pink: #e07a5f;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--light);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--green);
+      color: white;
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "🌿";
+      font-size: 6rem;
+      position: absolute;
+      top: -10px;
+      left: -20px;
+      opacity: 0.15;
+      transform: rotate(-20deg);
+    }
+
+    header::after {
+      content: "🌱";
+      font-size: 5rem;
+      position: absolute;
+      bottom: -10px;
+      right: 10px;
+      opacity: 0.15;
+      transform: rotate(15deg);
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      letter-spacing: -0.5px;
+      position: relative;
+    }
+
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      opacity: 0.85;
+      font-style: italic;
+    }
+
+    .slider-wrapper {
+      max-width: 780px;
+      margin: 3rem auto;
+      padding: 0 2rem;
+    }
+
+    .slide {
+      outline: none;
+      padding: 0 12px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      min-height: 320px;
+      display: flex !important;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-top: 6px solid var(--green);
+      transition: transform 0.2s;
+      position: relative;
+    }
+
+    .card:hover { transform: translateY(-4px); }
+
+    .plant-emoji {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      display: block;
+      animation: sway 3s ease-in-out infinite;
+    }
+
+    @keyframes sway {
+      0%, 100% { transform: rotate(-4deg); }
+      50% { transform: rotate(4deg); }
+    }
+
+    .plant-name {
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 0.6rem;
+    }
+
+    .quote {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      color: var(--dark);
+      font-style: italic;
+      margin-bottom: 1.2rem;
+    }
+
+    .subtext {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    .mood-tag {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--dark);
+      font-size: 0.7rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      margin-top: 1rem;
+    }
+
+    /* Slick dots override */
+    .slick-dots li button:before {
+      color: var(--green);
+      font-size: 10px;
+    }
+
+    .slick-dots li.slick-active button:before {
+      color: var(--green);
+    }
+
+    .slick-prev:before,
+    .slick-next:before {
+      color: var(--green);
+      font-size: 1.5rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: #999;
+      font-style: italic;
+    }
+
+    .byline {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .controls {
+      text-align: center;
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: #2e6b29; }
+
+    .btn.secondary {
+      background: white;
+      color: var(--green);
+      border: 2px solid var(--green);
+    }
+
+    .btn.secondary:hover { background: var(--light); }
+
+    #autoplay-status {
+      font-size: 0.75rem;
+      color: #999;
+      display: block;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🌿 Unsolicited Opinions from Houseplants</h1>
+    <p>They've been watching you. They have thoughts.</p>
+  </header>
+
+  <div class="slider-wrapper">
+    <p class="byline">Slide through to receive their wisdom.</p>
+
+    <div class="main-slider">
+
+      <div class="slide">
+        <div class="card">
+          <span class="plant-emoji">🪴</span>
+          <div class="plant-name">Gerald the Pothos</div>
+          <p class="quote">"You walked past me seven times today without watering me. Seven. I counted."</p>
+          <p class="subtext">He is drought-tolerant. He is not emotionally tolerant.</p>
+          <span class="mood-tag">Passive Aggressive</span>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="card">
+          <span class="plant-emoji">🌵</span>
+          <div class="plant-name">Brenda the Cactus</div>
+          <p class="quote">"I haven't needed you in 3 weeks and I'm doing great. This is not a metaphor. Or maybe it is."</p>
+          <p class="subtext">Brenda is fine. Brenda is always fine.</p>
+          <span class="mood-tag">Suspiciously Okay</span>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="card">
+          <span class="plant-emoji">🌺</span>
+          <div class="plant-name">Diane the Peace Lily</div>
+          <p class="quote">"I dramatically drooped so you'd pay attention to me, and it worked. I've learned so much about you."</p>
+          <p class="subtext">She bounced back in 20 minutes. It was performance art.</p>
+          <span class="mood-tag">Manipulative (Lovingly)</span>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="card">
+          <span class="plant-emoji">🌿</span>
+          <div class="plant-name">Kevin the Snake Plant</div>
+          <p class="quote">"I purify the air. I look great. I need almost nothing. Why are you still stressed?"</p>
+          <p class="subtext">Kevin has never had a bad day. It's a little irritating.</p>
+          <span class="mood-tag">Annoyingly Thriving</span>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="card">
+          <span class="plant-emoji">🍃</span>
+          <div class="plant-name">Margot the Fiddle Leaf Fig</div>
+          <p class="quote">"You moved me two inches to the left and I've decided to be devastated about it indefinitely."</p>
+          <p class="subtext">She has dropped 14 leaves. It's a protest.</p>
+          <span class="mood-tag">High Maintenance</span>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="card">
+          <span class="plant-emoji">🌱</span>
+          <div class="plant-name">Tim the Sprout</div>
+          <p class="quote">"I just got here. Everything is new. What is sunlight? What is soil? I am full of questions and hope."</p>
+          <p class="subtext">Tim is two weeks old. We're rooting for Tim.</p>
+          <span class="mood-tag">Pure of Heart</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="prev-btn">← Prev</button>
+      <button class="btn secondary" id="toggle-autoplay">Pause Autoplay</button>
+      <button class="btn" id="next-btn">Next →</button>
+    </div>
+    <span id="autoplay-status">Autoplay is on</span>
+  </div>
+
+  <footer>
+    No plants were harmed in the making of this website.<br/>
+    (Several were, however, slightly underwatered.)
+  </footer>
+
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!-- Slick JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      var isPlaying = true;
+
+      $('.main-slider').slick({
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3500,
+        arrows: false,
+        adaptiveHeight: true,
+        cssEase: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      });
+
+      $('#prev-btn').on('click', function () {
+        $('.main-slider').slick('slickPrev');
+      });
+
+      $('#next-btn').on('click', function () {
+        $('.main-slider').slick('slickNext');
+      });
+
+      $('#toggle-autoplay').on('click', function () {
+        if (isPlaying) {
+          $('.main-slider').slick('slickPause');
+          $(this).text('Resume Autoplay');
+          $('#autoplay-status').text('Autoplay is paused');
+        } else {
+          $('.main-slider').slick('slickPlay');
+          $(this).text('Pause Autoplay');
+          $('#autoplay-status').text('Autoplay is on');
+        }
+        isPlaying = !isPlaying;
+      });
+    });
+  </script>
+
+</body>
+</html>
