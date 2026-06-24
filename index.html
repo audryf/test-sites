@@ -5,14 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Unsolicited Opinions from Houseplants</title>
   <script async defer src="https://tools.luckyorange.com/core/lo.js?site-id=1dd04a7e"></script>  
-  <script>
-    window.LOQ = window.LOQ || []
-    window.LOQ.push(['ready', async LO => {
-        // Track an event
-        await LO.$internal.ready('events')
-        LO.events.track('My Event')
-    }])
-  </script>
   <!-- Slick CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
@@ -221,6 +213,27 @@
       display: block;
       margin-top: 0.5rem;
     }
+
+    .iframe-wrapper {
+      max-width: 780px;
+      margin: 2rem auto 3rem;
+      padding: 0 2rem;
+    }
+
+    .iframe-title {
+      font-size: 1.2rem;
+      color: var(--green);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .iframe-wrapper iframe {
+      width: 100%;
+      height: 480px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
   </style>
 </head>
 <body>
@@ -303,6 +316,17 @@
       <button class="btn" id="next-btn">Next →</button>
     </div>
     <span id="autoplay-status">Autoplay is on</span>
+  </div>
+
+  <div class="iframe-wrapper">
+    <h2 class="iframe-title">Plant Knowledge Base</h2>
+    <iframe
+      class="lo-sensitive"
+      src="https://en.wikipedia.org/wiki/Houseplant"
+      title="Houseplant - Wikipedia"
+      loading="lazy"
+      allowfullscreen
+    ></iframe>
   </div>
 
   <footer>
