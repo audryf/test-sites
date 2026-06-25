@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — Sensitive Data</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <span class="page-emoji">🔐</span>
+      <div>
+        <h1>Sensitive Data</h1>
+        <p>Elements with <code style="font-size:.8rem;background:#eef2ee;border:1px solid #d0ddd0;border-radius:4px;padding:.1rem .35rem;color:var(--green)">lo-sensitive</code> / <code style="font-size:.8rem;background:#eef2ee;border:1px solid #d0ddd0;border-radius:4px;padding:.1rem .35rem;color:var(--green)">lo_scramble</code> class variants. Text should be scrambled, images blank, iframes replaced with placeholder.</p>
+      </div>
+    </div>
+
+    <div class="sensitive-box">
+      <div class="sensitive-tag">lo-sensitive — text content</div>
+      <div class="lo-sensitive">
+        <p style="font-family:sans-serif;font-size:.88rem;line-height:1.6;color:#444">Name: John Smith &nbsp;|&nbsp; Address: 123 Main St, Springfield, IL 62701</p>
+        <p style="font-family:sans-serif;font-size:.88rem;line-height:1.6;color:#444;margin-top:.4rem">SSN: 123-45-6789 &nbsp;|&nbsp; Credit Card: 4111 1111 1111 1111 &nbsp;|&nbsp; CVV: 123</p>
+      </div>
+    </div>
+
+    <div class="sensitive-box">
+      <div class="sensitive-tag">lo-sensitive — form inputs</div>
+      <div class="lo-sensitive">
+        <div class="form-grid" style="margin-top:.25rem">
+          <div class="form-group">
+            <label>Cardholder</label>
+            <input type="text" value="Jane Doe" placeholder="Full name"/>
+          </div>
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" value="4111 1111 1111 1111" placeholder="Card number"/>
+          </div>
+          <div class="form-group">
+            <label>Expiry</label>
+            <input type="text" value="12/27" placeholder="MM/YY"/>
+          </div>
+          <div class="form-group">
+            <label>CVV</label>
+            <input type="text" value="321" placeholder="CVV"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sensitive-box">
+      <div class="sensitive-tag">lo_scramble alias</div>
+      <div class="lo_scramble">
+        <p style="font-family:sans-serif;font-size:.88rem;line-height:1.6;color:#444">Alternate class alias: user@private.com &nbsp;|&nbsp; Password: hunter2 &nbsp;|&nbsp; Token: sk_live_abc123xyz</p>
+      </div>
+    </div>
+
+    <div class="sensitive-box">
+      <div class="sensitive-tag">lo-sensitive — images (should show blank placeholder in recordings)</div>
+      <div class="lo-sensitive" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+        <img src="https://picsum.photos/seed/plant1/140/90" alt="Plant" style="border-radius:8px;width:140px;height:90px;object-fit:cover"/>
+        <img src="https://picsum.photos/seed/leaf2/140/90" alt="Leaf"  style="border-radius:8px;width:140px;height:90px;object-fit:cover"/>
+        <p style="font-family:sans-serif;font-size:.82rem;color:#888">These should appear as blank images in recordings (src replaced with BLANK_IMG).</p>
+      </div>
+    </div>
+
+    <div class="sensitive-box">
+      <div class="sensitive-tag">lo-sensitive — iframe (should show placeholder screen, not load content)</div>
+      <div class="lo-sensitive">
+        <iframe
+          src="https://en.wikipedia.org/wiki/Lucky_orange"
+          title="Sensitive iframe — Wikipedia"
+          style="width:100%;height:240px;border:none;border-radius:8px;"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+
+    <div class="sensitive-box">
+      <div class="sensitive-tag">lo-not-sensitive override — inside a lo-sensitive parent</div>
+      <div class="lo-sensitive">
+        <p style="font-family:sans-serif;font-size:.88rem;color:#444;margin-bottom:.75rem">Everything here is sensitive except the element below:</p>
+        <div class="lo-not-sensitive" style="background:white;border-radius:8px;padding:.75rem 1rem;border:1.5px solid var(--green);font-family:sans-serif;font-size:.88rem;color:var(--green)">
+          This element has <code style="font-size:.8rem">lo-not-sensitive</code> — it should NOT be scrambled even though its parent is lo-sensitive.
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

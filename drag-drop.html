@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — Drag &amp; Drop</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <span class="page-emoji">🧲</span>
+      <div>
+        <h1>Drag &amp; Drop</h1>
+        <p>Tests drag event tracking on draggable elements and a drop zone. Drag plant chips from the list into the zone.</p>
+      </div>
+    </div>
+
+    <div class="drag-zone" id="drop-zone">Drop plants here</div>
+    <div class="drag-items" id="drag-items">
+      <div class="drag-item" draggable="true" data-id="1">🪴 Gerald</div>
+      <div class="drag-item" draggable="true" data-id="2">🌵 Brenda</div>
+      <div class="drag-item" draggable="true" data-id="3">🌺 Diane</div>
+      <div class="drag-item" draggable="true" data-id="4">🌿 Kevin</div>
+      <div class="drag-item" draggable="true" data-id="5">🍃 Margot</div>
+      <div class="drag-item" draggable="true" data-id="6">🌱 Tim</div>
+    </div>
+
+    <div id="dropped-items" style="margin-top:1rem;min-height:2rem"></div>
+
+    <button class="btn secondary" id="reset-drag" style="margin-top:1.5rem">Reset</button>
+  </main>
+
+  <script>
+    var originalItems = document.getElementById('drag-items').innerHTML
+
+    var dragged = null
+    function bindDragItems () {
+      document.querySelectorAll('.drag-item').forEach(function (item) {
+        item.addEventListener('dragstart', function () {
+          dragged = this
+          setTimeout(function () { if (dragged) dragged.style.opacity = '0.4' }, 0)
+        })
+        item.addEventListener('dragend', function () { this.style.opacity = '' })
+      })
+    }
+    bindDragItems()
+
+    var dropZone = document.getElementById('drop-zone')
+    dropZone.addEventListener('dragover',  function (e) { e.preventDefault(); this.classList.add('drag-over') })
+    dropZone.addEventListener('dragleave', function ()  { this.classList.remove('drag-over') })
+    dropZone.addEventListener('drop', function (e) {
+      e.preventDefault()
+      this.classList.remove('drag-over')
+      if (!dragged) return
+      var chip = document.createElement('span')
+      chip.textContent = dragged.textContent
+      Object.assign(chip.style, { display:'inline-block', background:'var(--green)', color:'white', borderRadius:'999px', padding:'.3rem .8rem', fontSize:'.8rem', fontFamily:'sans-serif', margin:'.25rem' })
+      document.getElementById('dropped-items').appendChild(chip)
+      dragged.remove()
+      dragged = null
+    })
+
+    document.getElementById('reset-drag').addEventListener('click', function () {
+      document.getElementById('drag-items').innerHTML = originalItems
+      document.getElementById('dropped-items').innerHTML = ''
+      bindDragItems()
+    })
+  </script>
+</body>
+</html>

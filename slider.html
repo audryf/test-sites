@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — Slider</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <span class="page-emoji">🎠</span>
+      <div>
+        <h1>Slider / Carousel</h1>
+        <p>Slick carousel — tests scroll tracking, click events on custom controls, and DOM mutations on slide change.</p>
+      </div>
+    </div>
+
+    <p class="byline">Slide through to receive their wisdom.</p>
+    <div class="main-slider">
+      <div class="slide"><div class="card">
+        <span class="plant-emoji">🪴</span>
+        <div class="plant-name">Gerald the Pothos</div>
+        <p class="quote">"You walked past me seven times today without watering me. Seven. I counted."</p>
+        <p class="subtext">He is drought-tolerant. He is not emotionally tolerant.</p>
+        <span class="mood-tag">Passive Aggressive</span>
+      </div></div>
+      <div class="slide"><div class="card">
+        <span class="plant-emoji">🌵</span>
+        <div class="plant-name">Brenda the Cactus</div>
+        <p class="quote">"I haven't needed you in 3 weeks and I'm doing great. This is not a metaphor. Or maybe it is."</p>
+        <p class="subtext">Brenda is fine. Brenda is always fine.</p>
+        <span class="mood-tag">Suspiciously Okay</span>
+      </div></div>
+      <div class="slide"><div class="card">
+        <span class="plant-emoji">🌺</span>
+        <div class="plant-name">Diane the Peace Lily</div>
+        <p class="quote">"I dramatically drooped so you'd pay attention to me, and it worked. I've learned so much about you."</p>
+        <p class="subtext">She bounced back in 20 minutes. It was performance art.</p>
+        <span class="mood-tag">Manipulative (Lovingly)</span>
+      </div></div>
+      <div class="slide"><div class="card">
+        <span class="plant-emoji">🌿</span>
+        <div class="plant-name">Kevin the Snake Plant</div>
+        <p class="quote">"I purify the air. I look great. I need almost nothing. Why are you still stressed?"</p>
+        <p class="subtext">Kevin has never had a bad day. It's a little irritating.</p>
+        <span class="mood-tag">Annoyingly Thriving</span>
+      </div></div>
+      <div class="slide"><div class="card">
+        <span class="plant-emoji">🍃</span>
+        <div class="plant-name">Margot the Fiddle Leaf Fig</div>
+        <p class="quote">"You moved me two inches to the left and I've decided to be devastated about it indefinitely."</p>
+        <p class="subtext">She has dropped 14 leaves. It's a protest.</p>
+        <span class="mood-tag">High Maintenance</span>
+      </div></div>
+      <div class="slide"><div class="card">
+        <span class="plant-emoji">🌱</span>
+        <div class="plant-name">Tim the Sprout</div>
+        <p class="quote">"I just got here. Everything is new. What is sunlight? What is soil? I am full of questions and hope."</p>
+        <p class="subtext">Tim is two weeks old. We're rooting for Tim.</p>
+        <span class="mood-tag">Pure of Heart</span>
+      </div></div>
+    </div>
+
+    <div class="controls" style="justify-content:center;margin-top:1.25rem">
+      <button class="btn" id="prev-btn">← Prev</button>
+      <button class="btn secondary" id="toggle-autoplay">Pause Autoplay</button>
+      <button class="btn" id="next-btn">Next →</button>
+    </div>
+    <span id="autoplay-status">Autoplay is on</span>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+  <script>
+    $(function () {
+      var playing = true
+      $('.main-slider').slick({
+        dots: true, infinite: true, speed: 500,
+        slidesToShow: 1, slidesToScroll: 1,
+        autoplay: true, autoplaySpeed: 3500,
+        arrows: false, adaptiveHeight: true,
+        cssEase: 'cubic-bezier(0.25,0.46,0.45,0.94)'
+      })
+      $('#prev-btn').click(function () { $('.main-slider').slick('slickPrev') })
+      $('#next-btn').click(function () { $('.main-slider').slick('slickNext') })
+      $('#toggle-autoplay').click(function () {
+        playing ? $('.main-slider').slick('slickPause') : $('.main-slider').slick('slickPlay')
+        playing = !playing
+        this.textContent = playing ? 'Pause Autoplay' : 'Resume Autoplay'
+        document.getElementById('autoplay-status').textContent = playing ? 'Autoplay is on' : 'Autoplay is paused'
+      })
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — Dynamic Content</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <span class="page-emoji">⚡</span>
+      <div>
+        <h1>Dynamic Content</h1>
+        <p>Tests MutationObserver-based recording — node additions/removals, text content changes, class mutations, and timed DOM updates.</p>
+      </div>
+    </div>
+
+    <div class="dynamic-grid">
+      <div>
+        <h3 style="font-family:sans-serif;font-size:.95rem;margin-bottom:.75rem">Counter</h3>
+        <div class="counter-display" id="counter-val">0</div>
+        <div class="controls" style="justify-content:center">
+          <button class="btn secondary" id="counter-dec">−</button>
+          <button class="btn secondary" id="counter-reset">Reset</button>
+          <button class="btn" id="counter-inc">+</button>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-family:sans-serif;font-size:.95rem;margin-bottom:.75rem">Show / Hide &amp; Class Toggle</h3>
+        <div class="controls" style="margin-bottom:.75rem">
+          <button class="btn secondary" id="toggle-visibility">Toggle Visibility</button>
+          <button class="btn secondary" id="toggle-sensitive-class">Add lo-sensitive</button>
+        </div>
+        <div id="toggleable" style="background:white;border-radius:8px;padding:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);font-family:sans-serif;font-size:.85rem">
+          This content toggles. Adding lo-sensitive tests real-time class-driven scrambling.
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem">
+      <h3 style="font-family:sans-serif;font-size:.95rem;margin-bottom:.75rem">Live Node Mutations</h3>
+      <div class="controls" style="margin-bottom:.75rem">
+        <button class="btn" id="add-item">+ Add Item</button>
+        <button class="btn secondary" id="clear-list">Clear All</button>
+      </div>
+      <ul class="dynamic-list" id="dynamic-list">
+        <li>Initial item A <button onclick="this.parentElement.remove()">×</button></li>
+        <li>Initial item B <button onclick="this.parentElement.remove()">×</button></li>
+      </ul>
+    </div>
+
+    <div style="margin-top:2rem">
+      <h3 style="font-family:sans-serif;font-size:.95rem;margin-bottom:.75rem">Live Text Updates</h3>
+      <div class="live-text-box" id="live-text">Waiting…</div>
+      <div class="controls">
+        <button class="btn secondary" id="start-live">Start Updates</button>
+        <button class="btn secondary" id="stop-live">Stop</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    var count = 0
+    document.getElementById('counter-inc').addEventListener('click', function () { document.getElementById('counter-val').textContent = ++count })
+    document.getElementById('counter-dec').addEventListener('click', function () { document.getElementById('counter-val').textContent = --count })
+    document.getElementById('counter-reset').addEventListener('click', function () { count = 0; document.getElementById('counter-val').textContent = 0 })
+
+    document.getElementById('toggle-visibility').addEventListener('click', function () {
+      var el = document.getElementById('toggleable')
+      el.style.display = el.style.display === 'none' ? '' : 'none'
+    })
+    document.getElementById('toggle-sensitive-class').addEventListener('click', function () {
+      var el = document.getElementById('toggleable')
+      var on = el.classList.toggle('lo-sensitive')
+      this.textContent = on ? 'Remove lo-sensitive' : 'Add lo-sensitive'
+    })
+
+    var itemN = 2
+    document.getElementById('add-item').addEventListener('click', function () {
+      var li = document.createElement('li')
+      li.innerHTML = 'Dynamic item ' + (++itemN) + ' — ' + new Date().toLocaleTimeString() + ' <button onclick="this.parentElement.remove()">×</button>'
+      document.getElementById('dynamic-list').appendChild(li)
+    })
+    document.getElementById('clear-list').addEventListener('click', function () { document.getElementById('dynamic-list').innerHTML = '' })
+
+    var liveTimer = null
+    var msgs = ['Heatmap data processing…','Session recorded.','User clicked nav.','Form field focused.','Scroll depth: 42%','Rage click detected!','DOM mutation observed.','LO event fired.','WebSocket active.','Tracking running.']
+    document.getElementById('start-live').addEventListener('click', function () {
+      if (liveTimer) return
+      liveTimer = setInterval(function () { document.getElementById('live-text').textContent = msgs[Math.floor(Math.random() * msgs.length)] }, 700)
+    })
+    document.getElementById('stop-live').addEventListener('click', function () {
+      clearInterval(liveTimer); liveTimer = null
+      document.getElementById('live-text').textContent = 'Stopped.'
+    })
+  </script>
+</body>
+</html>

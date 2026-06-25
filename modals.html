@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — Modals</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <span class="page-emoji">🗂</span>
+      <div>
+        <h1>Modals &amp; Dialogs</h1>
+        <p>Tests overlay recording — custom CSS modal, native <code style="font-size:.8rem;background:#eef2ee;border:1px solid #d0ddd0;border-radius:4px;padding:.1rem .35rem;color:var(--green)">&lt;dialog&gt;</code> element, and a dynamically injected modal.</p>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="open-modal">Custom Modal</button>
+      <button class="btn secondary" id="open-dialog">Native &lt;dialog&gt;</button>
+      <button class="btn secondary" id="open-dynamic">Inject Dynamic Modal</button>
+    </div>
+  </main>
+
+  <!-- Custom Modal -->
+  <div class="modal-overlay" id="custom-modal">
+    <div class="modal-box">
+      <button class="modal-close" id="close-modal">×</button>
+      <h3>🌿 Custom Modal</h3>
+      <p>A CSS overlay modal. LO should record it appearing as a DOM mutation and track all interactions inside it.</p>
+      <div class="form-group" style="margin-top:1rem">
+        <label>Input inside modal</label>
+        <input type="text" placeholder="Type something — LO should track this"/>
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary" id="cancel-modal">Cancel</button>
+        <button class="btn">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Native Dialog -->
+  <dialog id="native-dialog">
+    <h3>🌱 Native &lt;dialog&gt;</h3>
+    <p>Uses <code>showModal()</code>. Tests if LO records the dialog opening/closing and tracks interactions inside it, including the backdrop.</p>
+    <div class="form-group" style="margin-top:1rem">
+      <label>Input inside dialog</label>
+      <input type="text" placeholder="Native dialog input…"/>
+    </div>
+    <div class="modal-footer">
+      <button class="btn secondary" id="close-dialog">Close</button>
+      <button class="btn">Submit</button>
+    </div>
+  </dialog>
+
+  <script>
+    document.getElementById('open-modal').addEventListener('click',  function () { document.getElementById('custom-modal').classList.add('active') })
+    document.getElementById('close-modal').addEventListener('click', function () { document.getElementById('custom-modal').classList.remove('active') })
+    document.getElementById('cancel-modal').addEventListener('click',function () { document.getElementById('custom-modal').classList.remove('active') })
+    document.getElementById('custom-modal').addEventListener('click',function (e) { if (e.target === this) this.classList.remove('active') })
+
+    document.getElementById('open-dialog').addEventListener('click', function () { document.getElementById('native-dialog').showModal() })
+    document.getElementById('close-dialog').addEventListener('click',function () { document.getElementById('native-dialog').close() })
+
+    document.getElementById('open-dynamic').addEventListener('click', function () {
+      var overlay = document.createElement('div')
+      overlay.className = 'modal-overlay active'
+      overlay.innerHTML =
+        '<div class="modal-box">' +
+          '<button class="modal-close" onclick="this.closest(\'.modal-overlay\').remove()">×</button>' +
+          '<h3>🌱 Dynamically Injected Modal</h3>' +
+          '<p>Injected into the DOM after page load via JavaScript. LO should capture this via MutationObserver as a newly added node tree.</p>' +
+          '<div class="modal-footer"><button class="btn" onclick="this.closest(\'.modal-overlay\').remove()">Got it</button></div>' +
+        '</div>'
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove() })
+      document.body.appendChild(overlay)
+    })
+  </script>
+</body>
+</html>

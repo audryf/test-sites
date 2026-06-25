@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — Forms</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <span class="page-emoji">📝</span>
+      <div>
+        <h1>Forms &amp; Inputs</h1>
+        <p>Tests input interaction tracking, form submission events, field focus/blur, and value capture behavior across all HTML input types.</p>
+      </div>
+    </div>
+
+    <form onsubmit="return false">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" name="first_name" placeholder="Jane"/>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" name="last_name" placeholder="Doe"/>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="jane@example.com"/>
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" name="phone" placeholder="+1 (555) 000-0000"/>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="••••••••"/>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" name="password2" placeholder="••••••••"/>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" name="dob"/>
+        </div>
+        <div class="form-group">
+          <label>Quantity</label>
+          <input type="number" name="qty" min="0" max="99" value="1"/>
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <select name="country">
+            <option value="">Select country…</option>
+            <option>United States</option>
+            <option>Canada</option>
+            <option>United Kingdom</option>
+            <option>Australia</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Plan</label>
+          <select name="plan">
+            <option>Free</option>
+            <option>Starter</option>
+            <option>Growth</option>
+            <option>Enterprise</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Satisfaction: <span id="range-val">5</span> / 10</label>
+          <input type="range" name="satisfaction" min="1" max="10" value="5"
+                 oninput="document.getElementById('range-val').textContent=this.value"/>
+        </div>
+        <div class="form-group full">
+          <label>Search</label>
+          <input type="search" name="search" placeholder="Search something…"/>
+        </div>
+        <div class="form-group full">
+          <label>Features</label>
+          <div class="check-radio-group">
+            <label><input type="checkbox" name="feat" value="heatmaps"/> Heatmaps</label>
+            <label><input type="checkbox" name="feat" value="recordings" checked/> Recordings</label>
+            <label><input type="checkbox" name="feat" value="surveys"/> Surveys</label>
+            <label><input type="checkbox" name="feat" value="chat"/> Live Chat</label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label>Tier</label>
+          <div class="check-radio-group">
+            <label><input type="radio" name="tier" value="free"/> Free</label>
+            <label><input type="radio" name="tier" value="paid" checked/> Paid</label>
+            <label><input type="radio" name="tier" value="enterprise"/> Enterprise</label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label>File Upload</label>
+          <input type="file" name="attachment" accept=".pdf,.doc,.png,.jpg"/>
+        </div>
+        <div class="form-group full">
+          <label>Message</label>
+          <textarea name="message" placeholder="Write something…"></textarea>
+        </div>
+        <div class="form-group full" style="display:flex;gap:1rem;justify-content:flex-end">
+          <button type="reset" class="btn secondary">Reset</button>
+          <button type="submit" class="btn">Submit Form</button>
+        </div>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

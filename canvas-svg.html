@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — Canvas &amp; SVG</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <span class="page-emoji">🎨</span>
+      <div>
+        <h1>Canvas &amp; SVG</h1>
+        <p>Canvas pixel data is not captured by LO — only the element itself. Inline SVG is part of the DOM and recorded normally.</p>
+      </div>
+    </div>
+
+    <div class="canvas-svg-grid">
+      <div>
+        <p class="canvas-label">Canvas — pixel data not captured</p>
+        <canvas id="demo-canvas" height="200"></canvas>
+      </div>
+      <div>
+        <p class="canvas-label">Inline SVG — recorded as DOM nodes</p>
+        <div class="svg-wrapper">
+          <svg width="180" height="180" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="100" r="80" fill="none" stroke="#3d8b37" stroke-width="3">
+              <animateTransform attributeName="transform" type="rotate"
+                from="0 100 100" to="360 100 100" dur="8s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="100" cy="100" r="52" fill="#f0f7ee"/>
+            <text x="100" y="92"  text-anchor="middle" font-family="Georgia" font-size="14" fill="#1a1a2e">Lucky</text>
+            <text x="100" y="114" text-anchor="middle" font-family="Georgia" font-size="14" fill="#3d8b37">Orange</text>
+            <circle cx="100" cy="100" r="6" fill="#e8c547">
+              <animate attributeName="r" values="4;8;4" dur="2s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    ;(function () {
+      var canvas = document.getElementById('demo-canvas')
+      var ctx    = canvas.getContext('2d')
+      function resize () { canvas.width = canvas.offsetWidth; canvas.height = 200 }
+      resize()
+      window.addEventListener('resize', resize)
+      var colors = ['#3d8b37','#e8c547','#e07a5f','#1a1a2e','#3d8b37']
+      function draw () {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.fillStyle = '#f0f7ee'; ctx.fillRect(0, 0, canvas.width, canvas.height)
+        var t = Date.now() / 1000
+        for (var i = 0; i < 5; i++) {
+          var x = (canvas.width / 6) * (i + 1)
+          var y = canvas.height / 2 + Math.sin(t + i * 1.2) * 38
+          ctx.beginPath(); ctx.arc(x, y, 10 + Math.sin(t * 2 + i) * 3, 0, Math.PI * 2)
+          ctx.fillStyle = colors[i]; ctx.fill()
+        }
+        ctx.fillStyle = '#bbb'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center'
+        ctx.fillText('Canvas pixel data is not captured by LO', canvas.width / 2, canvas.height - 10)
+        requestAnimationFrame(draw)
+      }
+      draw()
+    })()
+  </script>
+</body>
+</html>

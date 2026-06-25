@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — Web Components</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <span class="page-emoji">🧩</span>
+      <div>
+        <h1>Web Components &amp; Shadow DOM</h1>
+        <p>Custom elements with open and closed shadow roots, no-shadow elements, and slotted content. Tests LO's shadow root traversal.</p>
+      </div>
+    </div>
+
+    <div class="wc-grid">
+      <div>
+        <p class="wc-label">Open shadow DOM</p>
+        <plant-card name="Vera the Aloe" mood="Zen" emoji="🌵">
+          Has been silently judging your skincare routine for two years.
+        </plant-card>
+      </div>
+      <div>
+        <p class="wc-label">Closed shadow DOM</p>
+        <secret-note>
+          This content lives in a closed shadow root. LO cannot access it directly.
+        </secret-note>
+      </div>
+      <div>
+        <p class="wc-label">No shadow DOM (light DOM custom element)</p>
+        <mood-badge mood="Vibing" color="#3d8b37">Snake Plant</mood-badge><br style="margin-top:.5rem"/>
+        <mood-badge mood="Dramatic" color="#e07a5f">Fiddle Leaf</mood-badge><br style="margin-top:.5rem"/>
+        <mood-badge mood="Unbothered" color="#e8c547">Cactus</mood-badge>
+      </div>
+      <div>
+        <p class="wc-label">Interactive — open shadow DOM (click to rate)</p>
+        <star-rating max="5" value="3"></star-rating>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    class PlantCard extends HTMLElement {
+      connectedCallback () {
+        const s = this.attachShadow({ mode: 'open' })
+        s.innerHTML = `
+          <style>
+            :host{display:block;background:white;border-radius:12px;padding:1.1rem;box-shadow:0 4px 20px rgba(0,0,0,.08);border-top:4px solid #3d8b37}
+            .emoji{font-size:2.2rem;display:block;margin-bottom:.4rem}
+            .name{font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#3d8b37;margin-bottom:.35rem;font-family:sans-serif}
+            .desc{font-size:.82rem;color:#555;font-style:italic;font-family:Georgia,serif}
+            .mood{display:inline-block;background:#e8c547;color:#1a1a2e;font-size:.62rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:.2rem .6rem;border-radius:999px;margin-top:.6rem;font-family:sans-serif}
+          </style>
+          <span class="emoji">${this.getAttribute('emoji')||'🌿'}</span>
+          <div class="name">${this.getAttribute('name')||'Plant'}</div>
+          <div class="desc"><slot></slot></div>
+          <span class="mood">${this.getAttribute('mood')||'Vibing'}</span>`
+      }
+    }
+    customElements.define('plant-card', PlantCard)
+
+    class SecretNote extends HTMLElement {
+      connectedCallback () {
+        const s = this.attachShadow({ mode: 'closed' })
+        s.innerHTML = `
+          <style>
+            :host{display:block;background:#fff8f8;border:2px dashed #e07a5f;border-radius:12px;padding:1.1rem}
+            .tag{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#e07a5f;margin-bottom:.4rem;font-family:sans-serif}
+            p{font-family:sans-serif;font-size:.82rem;color:#666;line-height:1.5}
+          </style>
+          <div class="tag">Closed Shadow Root</div>
+          <p><slot></slot></p>`
+      }
+    }
+    customElements.define('secret-note', SecretNote)
+
+    class MoodBadge extends HTMLElement {
+      connectedCallback () {
+        const mood  = this.getAttribute('mood') || ''
+        const color = this.getAttribute('color') || '#3d8b37'
+        Object.assign(this.style, { display:'inline-block', background:color, color:'white', fontSize:'.75rem', fontWeight:'700', padding:'.3rem .75rem', borderRadius:'999px', fontFamily:'sans-serif', letterSpacing:'.5px' })
+        this.innerHTML = this.textContent.trim() + ' <span style="opacity:.8;font-weight:400">' + mood + '</span>'
+      }
+    }
+    customElements.define('mood-badge', MoodBadge)
+
+    class StarRating extends HTMLElement {
+      connectedCallback () {
+        this._v = parseInt(this.getAttribute('value')||'0')
+        this._m = parseInt(this.getAttribute('max')||'5')
+        this._root = this.attachShadow({ mode: 'open' })
+        this._draw()
+      }
+      _draw () {
+        const stars = Array.from({length:this._m},(_,i)=>`<span class="s ${i<this._v?'on':''}" data-v="${i+1}">★</span>`).join('')
+        this._root.innerHTML = `
+          <style>
+            :host{display:block}.stars{display:flex;gap:.2rem;font-size:2rem}.s{cursor:pointer;color:#ddd;transition:color .1s;user-select:none}.s.on{color:#e8c547}.s:hover{color:#e8c547;opacity:.8}.lbl{font-family:sans-serif;font-size:.75rem;color:#888;margin-top:.3rem}
+          </style>
+          <div class="stars">${stars}</div>
+          <div class="lbl">${this._v} / ${this._m} stars</div>`
+        this._root.querySelectorAll('.s').forEach(s => s.addEventListener('click', () => { this._v = parseInt(s.dataset.v); this._draw() }))
+      }
+    }
+    customElements.define('star-rating', StarRating)
+  </script>
+</body>
+</html>

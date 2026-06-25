@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — Docs</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    /* ---- Page Layout ---- */
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    /* ---- Hero ---- */
+    .hero {
+      background: var(--green);
+      color: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before { content: "🌿"; font-size: 8rem; position: absolute; right: -1rem; top: -1rem; opacity: 0.1; }
+    .hero h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .hero p  { font-size: 0.95rem; opacity: 0.85; font-style: italic; }
+
+    /* ---- TOC ---- */
+    .toc {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      margin-bottom: 3rem;
+    }
+    .toc h2 { font-size: 1rem; color: var(--green); margin-bottom: 1rem; font-family: sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+    .toc ol { padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .toc a  { color: var(--dark); text-decoration: none; font-family: sans-serif; font-size: 0.88rem; }
+    .toc a:hover { color: var(--green); text-decoration: underline; }
+
+    /* ---- Sections ---- */
+    .doc-section {
+      margin-bottom: 3rem;
+      scroll-margin-top: calc(var(--config-h) + var(--nav-h) + 1rem);
+    }
+
+    h2.section-heading {
+      font-size: 1.4rem;
+      color: var(--green);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #dde8db;
+    }
+
+    h3.sub-heading {
+      font-size: 1rem;
+      color: var(--dark);
+      margin: 1.5rem 0 0.5rem;
+      font-family: sans-serif;
+    }
+
+    p, li { font-size: 0.9rem; line-height: 1.7; font-family: sans-serif; color: #444; }
+    p { margin-bottom: 0.75rem; }
+
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.35rem; }
+
+    code {
+      background: #eef2ee;
+      border: 1px solid #d0ddd0;
+      border-radius: 4px;
+      padding: 0.1rem 0.4rem;
+      font-size: 0.82rem;
+      font-family: monospace;
+      color: var(--green);
+    }
+
+    pre {
+      background: var(--dark);
+      color: #a8d5a2;
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      margin: 0.75rem 0 1.25rem;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      font-family: monospace;
+    }
+    pre .comment { color: #596e56; }
+    pre .key    { color: #e8c547; }
+    pre .val    { color: #e07a5f; }
+
+    /* ---- Cards ---- */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .doc-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      border-left: 4px solid var(--green);
+    }
+
+    .doc-card h4 {
+      font-size: 0.88rem;
+      margin-bottom: 0.35rem;
+      color: var(--dark);
+      font-family: sans-serif;
+    }
+    .doc-card p { font-size: 0.8rem; color: #777; margin: 0; }
+
+    .doc-card.accent  { border-left-color: var(--accent); }
+    .doc-card.pink    { border-left-color: var(--pink); }
+    .doc-card.dark    { border-left-color: var(--dark); }
+
+    /* ---- Table ---- */
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    }
+    .doc-table thead { background: var(--green); color: white; }
+    .doc-table th { padding: 0.65rem 1rem; text-align: left; font-size: 0.8rem; font-family: sans-serif; font-weight: 600; }
+    .doc-table td { padding: 0.6rem 1rem; font-size: 0.82rem; font-family: sans-serif; color: #444; border-bottom: 1px solid #eee; }
+    .doc-table tbody tr:last-child td { border-bottom: none; }
+    .doc-table tbody tr:hover { background: var(--light); }
+
+    /* ---- Badges ---- */
+    .badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: bold;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      font-family: sans-serif;
+      vertical-align: middle;
+    }
+    .badge.green  { background: var(--light); color: var(--green); border: 1px solid var(--green); }
+    .badge.yellow { background: #fdf8e1; color: #8a6f00; border: 1px solid var(--accent); }
+    .badge.red    { background: #fff1ee; color: #a03a22; border: 1px solid var(--pink); }
+
+    /* ---- Callout ---- */
+    .callout {
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      display: flex;
+      gap: 0.75rem;
+      font-family: sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .callout.info  { background: #e8f4e8; border-left: 4px solid var(--green); color: #2a5c27; }
+    .callout.warn  { background: #fdf8e1; border-left: 4px solid var(--accent); color: #7a6200; }
+    .callout.note  { background: #f0f0f8; border-left: 4px solid #6b6bcc; color: #3a3a7a; }
+    .callout-icon  { font-size: 1.1rem; flex-shrink: 0; }
+
+    footer { text-align: center; padding: 2rem; font-size: 0.8rem; color: #aaa; font-style: italic; }
+  </style>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <div class="page">
+
+    <div class="hero">
+      <h1>Developer Docs</h1>
+      <p>Everything you need to know about running, configuring, and testing with this site.</p>
+    </div>
+
+    <!-- TOC -->
+    <div class="toc">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#overview">What this site is for</a></li>
+        <li><a href="#setup">Running it locally</a></li>
+        <li><a href="#lo-config">Switching LO environment &amp; site ID</a></li>
+        <li><a href="#sections">Test sections reference</a></li>
+        <li><a href="#lo-sensitive">lo-sensitive class reference</a></li>
+        <li><a href="#shadow-dom">Shadow DOM &amp; web components</a></li>
+        <li><a href="#iframes">iframe recording behavior</a></li>
+        <li><a href="#adding">Adding new test cases</a></li>
+      </ol>
+    </div>
+
+    <!-- ======================== OVERVIEW ======================== -->
+    <div class="doc-section" id="overview">
+      <h2 class="section-heading">🌿 What this site is for</h2>
+      <p>This is a <strong>self-contained manual test bed</strong> for Lucky Orange's browser tracking script (<code>lo.js</code>). It covers a wide range of DOM patterns, input types, and third-party embedding scenarios that LO needs to handle correctly during session recording.</p>
+      <p>Use it to:</p>
+      <ul>
+        <li>Verify recording behavior after changes to <strong>fingerprint</strong> or <strong>core</strong></li>
+        <li>Test <code>lo-sensitive</code> scrambling and iframe placeholder logic</li>
+        <li>Check shadow DOM traversal with open vs. closed roots</li>
+        <li>Reproduce edge cases before filing or closing a bug</li>
+        <li>Compare behavior between <strong>production</strong> and <strong>staging</strong> tracking scripts side-by-side (different browser tabs)</li>
+      </ul>
+
+      <div class="callout info">
+        <span class="callout-icon">💡</span>
+        This site does not have a backend. Everything runs in the browser. There is nothing to install beyond a static file server.
+      </div>
+    </div>
+
+    <!-- ======================== SETUP ======================== -->
+    <div class="doc-section" id="setup">
+      <h2 class="section-heading">🚀 Running it locally</h2>
+
+      <p>Serve the <code>test-sites/</code> directory with any static file server. A <code>serve.json</code> is included that sets the CORS and Private Network Access headers needed to load <code>lo.js</code> from a local dev server.</p>
+
+      <h3 class="sub-heading">Option A — npx serve (recommended)</h3>
+      <pre><span class="comment"># from the test-sites directory</span>
+npx serve .</pre>
+      <p>This uses the included <code>serve.json</code> automatically. The site will be available at <code>http://localhost:3000</code> (or the next available port).</p>
+
+      <h3 class="sub-heading">Option B — any other server</h3>
+      <pre><span class="comment"># python</span>
+python3 -m http.server 3000
+
+<span class="comment"># or VS Code Live Server extension — just open index.html</span></pre>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        If you're testing against a <strong>local core dev server</strong> (e.g. <code>https://localhost:8080</code>), the test site <strong>must also be served from localhost</strong> — not from <code>audryf.github.io</code>. Chrome's Private Network Access policy blocks public HTTPS pages from loading scripts from loopback addresses. Serving both from localhost sidesteps this entirely.
+      </div>
+
+      <h3 class="sub-heading">Why serve.json exists</h3>
+      <p>The <code>serve.json</code> in this directory adds these response headers to every file served:</p>
+      <pre><span class="key">Access-Control-Allow-Origin</span>: <span class="val">*</span>
+<span class="key">Access-Control-Allow-Methods</span>: <span class="val">GET, POST, PUT, DELETE, PATCH, OPTIONS</span>
+<span class="key">Access-Control-Allow-Headers</span>: <span class="val">X-Requested-With, content-type, Authorization</span>
+<span class="key">Access-Control-Allow-Private-Network</span>: <span class="val">true</span></pre>
+      <p>The last header (<code>Access-Control-Allow-Private-Network</code>) is specifically what Chrome requires when a page makes requests to loopback addresses from a non-loopback origin.</p>
+    </div>
+
+    <!-- ======================== LO CONFIG ======================== -->
+    <div class="doc-section" id="lo-config">
+      <h2 class="section-heading">⚙️ Switching LO environment &amp; site ID</h2>
+      <p>The dark bar pinned to the very top of the page is the <strong>LO Config Bar</strong>. It lets you change which tracking script is loaded without touching any code.</p>
+
+      <div class="card-grid">
+        <div class="doc-card">
+          <h4>Prod / Staging toggle</h4>
+          <p>Switches between the production CDN and the staging GCS bucket. Selection is saved to <code>localStorage</code>.</p>
+        </div>
+        <div class="doc-card accent">
+          <h4>Site ID input</h4>
+          <p>Override the site ID loaded with the script. Leave blank to use the default for the selected environment.</p>
+        </div>
+        <div class="doc-card dark">
+          <h4>Apply &amp; Reload</h4>
+          <p>Saves the config and reloads the page. On reload, the inline script in <code>&lt;head&gt;</code> reads <code>localStorage</code> and injects the right script tag before anything else loads.</p>
+        </div>
+      </div>
+
+      <h3 class="sub-heading">Script URLs</h3>
+      <table class="doc-table">
+        <thead><tr><th>Environment</th><th>URL</th><th>Default site ID</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge green">Production</span></td><td><code>https://tools.luckyorange.com/core/lo.js</code></td><td><code>1dd04a7e</code></td></tr>
+          <tr><td><span class="badge yellow">Staging</span></td><td><code>https://storage.googleapis.com/lucky-orange-staging-public/core/lo.js</code></td><td><code>63101cf1</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-heading">How the loader works</h3>
+      <p>The very first <code>&lt;script&gt;</code> tag in <code>&lt;head&gt;</code> is an inline IIFE that runs synchronously before any other resource loads:</p>
+      <pre><span class="comment">// Reads config, builds the correct src, and injects a script tag</span>
+var cfg = JSON.parse(localStorage.getItem(<span class="val">'lo-config'</span>) || <span class="val">'{}'</span>)
+var env = cfg.env || <span class="val">'production'</span>
+var siteId = cfg.siteId || DEFAULT_IDS[env]
+var s = document.createElement(<span class="val">'script'</span>)
+s.async = s.defer = true
+s.src = URLS[env] + <span class="val">'?site-id='</span> + siteId
+document.head.appendChild(s)</pre>
+      <p>This means the tracking script is loaded with the same timing as a hard-coded <code>&lt;script async defer&gt;</code> tag — there is no difference in LO's initialization behavior.</p>
+    </div>
+
+    <!-- ======================== SECTIONS ======================== -->
+    <div class="doc-section" id="sections">
+      <h2 class="section-heading">📋 Test sections reference</h2>
+
+      <table class="doc-table">
+        <thead><tr><th>Section</th><th>What it tests</th><th>Notable interactions</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Slider</strong></td>
+            <td>Slick carousel — DOM mutations on slide change, click on custom controls</td>
+            <td>Prev/Next buttons, autoplay toggle</td>
+          </tr>
+          <tr>
+            <td><strong>Forms</strong></td>
+            <td>Every HTML input type: text, email, password, tel, date, number, range, search, file, select, checkbox, radio, textarea</td>
+            <td>Type in fields, submit, reset</td>
+          </tr>
+          <tr>
+            <td><strong>Sensitive Data</strong></td>
+            <td><code>lo-sensitive</code> / <code>lo_scramble</code> on text, form inputs, images, and iframes</td>
+            <td>See <a href="#lo-sensitive">lo-sensitive reference</a> below</td>
+          </tr>
+          <tr>
+            <td><strong>Web Components</strong></td>
+            <td>Open shadow DOM, closed shadow DOM, no-shadow custom elements, slotted content</td>
+            <td>Click stars on the rating widget</td>
+          </tr>
+          <tr>
+            <td><strong>Dynamic Content</strong></td>
+            <td>Counter (text mutation), show/hide (style mutation), live class toggle (<code>lo-sensitive</code> applied post-load), node add/remove, rapid text updates</td>
+            <td>All buttons in the section</td>
+          </tr>
+          <tr>
+            <td><strong>iFrames</strong></td>
+            <td>Cross-origin iframes with and without <code>lo-sensitive</code> wrapper</td>
+            <td>See <a href="#iframes">iframe behavior</a> below</td>
+          </tr>
+          <tr>
+            <td><strong>Canvas / SVG</strong></td>
+            <td>Animated canvas (pixel data not captured), inline SVG (recorded as DOM nodes)</td>
+            <td>Visual only</td>
+          </tr>
+          <tr>
+            <td><strong>Tables</strong></td>
+            <td>Click-to-sort, hover on rows</td>
+            <td>Click any column header</td>
+          </tr>
+          <tr>
+            <td><strong>Accordion</strong></td>
+            <td>Height-transition expand/collapse, click events on headers</td>
+            <td>Click any accordion header</td>
+          </tr>
+          <tr>
+            <td><strong>Tooltips</strong></td>
+            <td>CSS <code>::after</code> pseudo-element hover states (not in DOM snapshot)</td>
+            <td>Hover over any element</td>
+          </tr>
+          <tr>
+            <td><strong>Drag &amp; Drop</strong></td>
+            <td><code>dragstart</code>, <code>dragover</code>, <code>drop</code> event tracking</td>
+            <td>Drag plant chips into the drop zone</td>
+          </tr>
+          <tr>
+            <td><strong>Modals</strong></td>
+            <td>Custom CSS overlay, native <code>&lt;dialog&gt;</code> with <code>showModal()</code>, dynamically injected modal (MutationObserver)</td>
+            <td>Open each modal type</td>
+          </tr>
+          <tr>
+            <td><strong>Rich Text</strong></td>
+            <td>Quill.js — <code>contenteditable</code> with nested spans, continuous DOM mutations while typing</td>
+            <td>Type in the editor</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-heading">Simulated third-party widgets</h3>
+      <p>Two persistent widgets live outside the main sections and are always present on the page:</p>
+      <ul>
+        <li><strong>Chat widget</strong> (bottom-right corner) — simulates an Intercom/Drift-style chat button. The window opens, accepts typed messages, and sends a fake reply. Tests LO recording inside a floating overlay that is always in the DOM.</li>
+        <li><strong>Cookie consent banner</strong> (bottom of page) — simulates a OneTrust/Cookiebot-style banner. Dismiss it with Accept or Reject. Tests LO tracking on a fixed-position overlay that removes itself from the DOM on interaction.</li>
+      </ul>
+    </div>
+
+    <!-- ======================== LO-SENSITIVE ======================== -->
+    <div class="doc-section" id="lo-sensitive">
+      <h2 class="section-heading">🔐 lo-sensitive class reference</h2>
+
+      <p>Any element (or its ancestor) with one of the following class names is treated as sensitive by LO's <code>scrambleNode</code> function in <code>fingerprint/src/tree-mirror/privacy.js</code>:</p>
+
+      <table class="doc-table">
+        <thead><tr><th>Class name</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>lo-sensitive</code></td><td>Primary class, recommended</td></tr>
+          <tr><td><code>lo_sensitive</code></td><td>Underscore variant</td></tr>
+          <tr><td><code>losensitive</code></td><td>No-separator variant</td></tr>
+          <tr><td><code>loscramble</code></td><td>Alias</td></tr>
+          <tr><td><code>lo_scramble</code></td><td>Alias with underscore</td></tr>
+        </tbody>
+      </table>
+
+      <p>Sensitivity <strong>inherits downward</strong> — you can put the class on a container and all children will be treated as sensitive. You can opt a child back out with <code>lo-not-sensitive</code> or <code>lonotsensitive</code>.</p>
+
+      <h3 class="sub-heading">What scrambleNode does per element type</h3>
+
+      <table class="doc-table">
+        <thead><tr><th>Element</th><th>Behavior in recording</th></tr></thead>
+        <tbody>
+          <tr><td>Text nodes</td><td>Characters replaced with random letters/numbers preserving case and format</td></tr>
+          <tr><td><code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code></td><td><code>value</code> attribute scrambled; interaction events still fire</td></tr>
+          <tr><td><code>&lt;img&gt;</code></td><td><code>src</code> replaced with a 1×1 transparent GIF (<code>BLANK_IMG</code>) — image appears blank</td></tr>
+          <tr><td><code>&lt;iframe&gt;</code></td><td><code>src</code> set to <code>about:blank</code>, <code>srcdoc</code> injected with a styled placeholder screen — content never loads in the player</td></tr>
+          <tr><td>Any element with <code>title</code></td><td><code>title</code> attribute scrambled</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        The iframe placeholder (<code>srcdoc</code>) was added to <code>privacy.js</code> to replace the previous behavior where a sensitive iframe showed as an empty white box. The player now renders a "Third-party iframe — content not captured" message instead.
+      </div>
+    </div>
+
+    <!-- ======================== SHADOW DOM ======================== -->
+    <div class="doc-section" id="shadow-dom">
+      <h2 class="section-heading">🧩 Shadow DOM &amp; web components</h2>
+
+      <p>The Web Components section contains four custom elements that cover the main shadow DOM scenarios LO needs to handle:</p>
+
+      <table class="doc-table">
+        <thead><tr><th>Element</th><th>Shadow mode</th><th>Expected LO behavior</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>&lt;plant-card&gt;</code></td>
+            <td><span class="badge green">open</span></td>
+            <td>LO can access <code>shadowRoot</code> and record the internal DOM. Content should appear in recordings.</td>
+          </tr>
+          <tr>
+            <td><code>&lt;secret-note&gt;</code></td>
+            <td><span class="badge red">closed</span></td>
+            <td>LO cannot access <code>shadowRoot</code> (returns <code>null</code>). The element appears in recordings as an empty custom element.</td>
+          </tr>
+          <tr>
+            <td><code>&lt;mood-badge&gt;</code></td>
+            <td>None (light DOM)</td>
+            <td>Rendered directly into the main document. Recorded normally like any other element.</td>
+          </tr>
+          <tr>
+            <td><code>&lt;star-rating&gt;</code></td>
+            <td><span class="badge green">open</span></td>
+            <td>Interactive — click events inside the shadow root should be captured. Star selection re-renders the shadow DOM, which LO should record as mutations.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout info">
+        <span class="callout-icon">💡</span>
+        LO traverses open shadow roots using <code>shadowRoot.childNodes</code> in the initial tree snapshot and subscribes to mutations within them. To verify this is working, open a recording and confirm that the <code>&lt;plant-card&gt;</code> internals (name, description, mood tag) are visible in the DOM panel.
+      </div>
+    </div>
+
+    <!-- ======================== IFRAMES ======================== -->
+    <div class="doc-section" id="iframes">
+      <h2 class="section-heading">🖼 iframe recording behavior</h2>
+
+      <p>There are four iframes in the iFrames section, covering the main combinations of cross-origin + sensitivity:</p>
+
+      <table class="doc-table">
+        <thead><tr><th>iframe</th><th>Cross-origin</th><th>lo-sensitive</th><th>Expected in player</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Wikipedia (Houseplant)</td>
+            <td>✅ Yes</td>
+            <td>❌ No</td>
+            <td><code>src</code> neutralized to <code>about:blank</code> by <code>frames.js</code> — shows blank frame</td>
+          </tr>
+          <tr>
+            <td>YouTube</td>
+            <td>✅ Yes</td>
+            <td>❌ No</td>
+            <td>Same — <code>src</code> neutralized, blank frame</td>
+          </tr>
+          <tr>
+            <td>OpenStreetMap</td>
+            <td>✅ Yes</td>
+            <td>✅ Yes</td>
+            <td>Placeholder screen: "Third-party iframe — content not captured"</td>
+          </tr>
+          <tr>
+            <td>Wikipedia (Lucky Orange)</td>
+            <td>✅ Yes</td>
+            <td>✅ Yes</td>
+            <td>Placeholder screen: "Third-party iframe — content not captured"</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-heading">Where each behavior is implemented</h3>
+      <ul>
+        <li><strong>Cross-origin src neutralization</strong> — <code>core/src/modules/page-recording/transformations/frames.js</code> — detects cross-origin iframes on every vnode pass and sets <code>vnode.a.src = 'about:blank'</code>.</li>
+        <li><strong>lo-sensitive placeholder</strong> — <code>fingerprint/src/tree-mirror/privacy.js</code> in <code>scrambleNode()</code> — sets <code>vnode.a.src = 'about:blank'</code> and injects <code>vnode.a.srcdoc</code> with a styled placeholder HTML document. Because <code>srcdoc</code> takes precedence over <code>src</code> in the browser, the player renders the placeholder instead of a blank frame.</li>
+      </ul>
+
+      <div class="callout note">
+        <span class="callout-icon">📌</span>
+        There is also a sensitive iframe in the <strong>Sensitive Data</strong> section (Wikipedia / Lucky Orange page) — that one is the primary test case for the <code>srcdoc</code> placeholder behavior since it has <code>lo-sensitive</code> directly on the wrapper.
+      </div>
+    </div>
+
+    <!-- ======================== ADDING ======================== -->
+    <div class="doc-section" id="adding">
+      <h2 class="section-heading">➕ Adding new test cases</h2>
+
+      <p>The site is a single <code>index.html</code> file. Each test is a <code>&lt;section id="..."&gt;</code> with a matching <code>&lt;a href="#..."&gt;</code> in the nav.</p>
+
+      <h3 class="sub-heading">Adding a new section</h3>
+      <ol>
+        <li>Add a <code>&lt;li&gt;&lt;a href="#your-id"&gt;Label&lt;/a&gt;&lt;/li&gt;</code> to the <code>.nav-links</code> list.</li>
+        <li>Add a <code>&lt;section id="your-id" class="section"&gt;</code> block in the body where you want it to appear.</li>
+        <li>Give it a <code>&lt;h2 class="section-title"&gt;</code> and a <code>&lt;p class="section-desc"&gt;</code> describing what it tests.</li>
+      </ol>
+
+      <h3 class="sub-heading">Conventions</h3>
+      <ul>
+        <li>Keep the <code>section-desc</code> short and specific — it's the first thing another developer reads to understand what's being tested.</li>
+        <li>If you're testing a specific LO behavior, mention the file/function it exercises (e.g. <em>"tests <code>scrambleNode</code> in privacy.js"</em>).</li>
+        <li>For sensitive data tests, always wrap in a <code>.sensitive-box</code> div with a <code>.sensitive-tag</code> label so the intent is visually obvious.</li>
+        <li>For iframe tests, use the <code>.iframe-card</code> + <code>.iframe-label</code> pattern so it's clear what each iframe is and why it's there.</li>
+      </ul>
+
+      <h3 class="sub-heading">Third-party scripts</h3>
+      <p>You can add additional third-party embed scripts (Typeform, Calendly, Stripe Elements, etc.) directly to <code>index.html</code>. Just add a new section and drop in the embed code. If the embed is sensitive, wrap it in <code>&lt;div class="lo-sensitive"&gt;</code>.</p>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        Be careful about adding third-party scripts that set their own cookies or make network requests — those could interfere with what you're measuring in LO recordings. Prefer iframe-based embeds over injected scripts when possible for test isolation.
+      </div>
+    </div>
+
+  </div>
+
+  <footer>LO Test Site — internal developer reference</footer>
+
+</body>
+</html>

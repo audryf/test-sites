@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — iFrames</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <span class="page-emoji">🖼</span>
+      <div>
+        <h1>iFrames &amp; Third-party Embeds</h1>
+        <p>Cross-origin iframes. Without <code style="font-size:.8rem;background:#eef2ee;border:1px solid #d0ddd0;border-radius:4px;padding:.1rem .35rem;color:var(--green)">lo-sensitive</code> the src is neutralized. With it, the player shows a placeholder screen instead of loading content.</p>
+      </div>
+    </div>
+
+    <div class="iframe-grid">
+      <div class="iframe-card">
+        <span class="iframe-label">Wikipedia — cross-origin, no lo-sensitive</span>
+        <iframe src="https://en.wikipedia.org/wiki/Houseplant" title="Houseplant Wikipedia" loading="lazy"></iframe>
+      </div>
+      <div class="iframe-card">
+        <span class="iframe-label">YouTube — cross-origin, no lo-sensitive</span>
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube" loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="iframe-card">
+        <span class="iframe-label">OpenStreetMap — cross-origin, lo-sensitive</span>
+        <div class="lo-sensitive">
+          <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-97.0,25.0,-80.0,36.0&layer=mapnik"
+                  title="OpenStreetMap" loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="iframe-card">
+        <span class="iframe-label">Wikipedia — cross-origin, lo-sensitive</span>
+        <div class="lo-sensitive">
+          <iframe src="https://en.wikipedia.org/wiki/Lucky_orange" title="Wikipedia sensitive" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

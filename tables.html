@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — Tables</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <span class="page-emoji">📊</span>
+      <div>
+        <h1>Tables</h1>
+        <p>Tests hover and click tracking on table rows and sortable column headers. Click any header to sort.</p>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table id="plant-table">
+        <thead>
+          <tr>
+            <th data-col="0">Plant ↕</th>
+            <th data-col="1">Type ↕</th>
+            <th data-col="2">Watering ↕</th>
+            <th data-col="3">Mood ↕</th>
+            <th data-col="4">Drama ↕</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Gerald Pothos</td><td>Trailing Vine</td><td>Weekly-ish</td><td>Passive Aggressive</td><td>★★★☆☆</td></tr>
+          <tr><td>Brenda Cactus</td><td>Succulent</td><td>Never</td><td>Suspiciously Okay</td><td>★☆☆☆☆</td></tr>
+          <tr><td>Diane Peace Lily</td><td>Flowering</td><td>When she droops</td><td>Manipulative</td><td>★★★★☆</td></tr>
+          <tr><td>Kevin Snake Plant</td><td>Upright</td><td>Monthly</td><td>Annoyingly Thriving</td><td>★☆☆☆☆</td></tr>
+          <tr><td>Margot Fiddle Leaf</td><td>Tree</td><td>Complicated</td><td>Devastated</td><td>★★★★★</td></tr>
+          <tr><td>Tim the Sprout</td><td>Seedling</td><td>Daily, lovingly</td><td>Pure of Heart</td><td>★☆☆☆☆</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    document.querySelectorAll('#plant-table th').forEach(function (th) {
+      th.addEventListener('click', function () {
+        var col   = parseInt(this.dataset.col)
+        var tbody = document.querySelector('#plant-table tbody')
+        var rows  = Array.from(tbody.querySelectorAll('tr'))
+        var asc   = this.dataset.asc !== 'true'
+        this.dataset.asc = asc
+        rows.sort(function (a, b) {
+          var va = a.cells[col].textContent.trim()
+          var vb = b.cells[col].textContent.trim()
+          return asc ? va.localeCompare(vb) : vb.localeCompare(va)
+        })
+        rows.forEach(function (r) { tbody.appendChild(r) })
+      })
+    })
+  </script>
+</body>
+</html>

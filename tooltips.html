@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LO Test Site — Tooltips</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <script src="shared.js"></script>
+
+  <main class="page-wrap">
+    <div class="page-header">
+      <span class="page-emoji">💬</span>
+      <div>
+        <h1>Tooltips &amp; Hover States</h1>
+        <p>CSS <code style="font-size:.8rem;background:#eef2ee;border:1px solid #d0ddd0;border-radius:4px;padding:.1rem .35rem;color:var(--green)">::after</code> pseudo-element tooltips are not in the DOM snapshot. Tests whether hover events are captured on various element types.</p>
+      </div>
+    </div>
+
+    <div class="tooltip-demo">
+      <button class="btn" data-tooltip="This is a primary action button">Hover me</button>
+      <button class="btn secondary" data-tooltip="Secondary action — less emphasis">Secondary</button>
+      <span data-tooltip="This is just a span with a tooltip"
+            style="font-family:sans-serif;font-size:.88rem;text-decoration:underline dotted;cursor:help">Hover this text</span>
+      <span class="mood-tag" data-tooltip="LO tracks hover on inline elements too">mood-tag</span>
+      <img src="https://picsum.photos/seed/tooltip/60/60" alt="tooltip image"
+           data-tooltip="Image with tooltip"
+           style="border-radius:50%;width:48px;height:48px;object-fit:cover;cursor:help"/>
+    </div>
+
+    <div style="margin-top:2.5rem;background:white;border-radius:12px;padding:1.5rem;box-shadow:0 4px 16px rgba(0,0,0,.07)">
+      <h3 style="font-family:sans-serif;font-size:.95rem;color:var(--green);margin-bottom:.75rem">Hover state changes</h3>
+      <p style="font-family:sans-serif;font-size:.85rem;color:#555;margin-bottom:1rem;line-height:1.6">These elements change their visible state on hover. LO records the underlying DOM, not rendered pixels — hover state changes via CSS only won't appear in recordings unless they change DOM attributes or style attributes.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <div style="width:100px;height:100px;background:var(--light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;transition:background .2s"
+             onmouseover="this.style.background='var(--green)';this.style.color='white'"
+             onmouseout="this.style.background='';this.style.color=''">🌿</div>
+        <div style="width:100px;height:100px;background:var(--light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;transition:background .2s"
+             onmouseover="this.style.background='var(--accent)'"
+             onmouseout="this.style.background=''">🌵</div>
+        <div style="width:100px;height:100px;background:var(--light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;transition:background .2s"
+             onmouseover="this.style.background='var(--pink)';this.style.color='white'"
+             onmouseout="this.style.background='';this.style.color=''">🌺</div>
+      </div>
+      <p style="font-family:sans-serif;font-size:.78rem;color:#aaa;margin-top:.75rem">These use inline onmouseover/onmouseout which set style attributes — LO will record those attribute mutations.</p>
+    </div>
+  </main>
+</body>
+</html>
